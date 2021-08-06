@@ -4,6 +4,13 @@ public class Class {
     private String subject;
     private int grade;
 
+    Class(String teacher, String subject) {
+
+        this.teacher = teacher;
+        this.subject = subject;
+
+    }
+
     public String getTeacher(){
         return this.teacher;
     }
@@ -21,7 +28,11 @@ public class Class {
         this.subject = newSubject;
     }
     public void setGrade(int newGrade){
-        this.grade = newGrade;
+        if (newGrade > 100 || newGrade < 0){
+            System.out.println("That grade is invalid");
+        } else{
+            this.grade = newGrade;
+        }
     }
 
 }
