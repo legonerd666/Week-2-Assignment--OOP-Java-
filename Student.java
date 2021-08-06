@@ -7,11 +7,11 @@ public class Student {
     private int ID;
     private int[] dateOfBirth = new int[3];
     private int gradeLevel;
-    private int lastDayOfAttendance;
+    private int[] lastDayOfAttendance = new int[3];
     private List<Class> classes = new ArrayList<>();
     private float overallGrade;
 
-    Student(String name, int ID, int[] dateOfBirth, int gradeLevel, int lastDayOfAttendance, List<Class> classes){
+    Student(String name, int ID, int[] dateOfBirth, int gradeLevel, int[] lastDayOfAttendance, List<Class> classes){
 
         this.name = name;
         this.ID = ID;
@@ -51,10 +51,10 @@ public class Student {
         this.gradeLevel = newGradeLevel;
     }
 
-    public int getLastDayOfAttendance(){
+    public int[] getLastDayOfAttendance(){
         return this.lastDayOfAttendance;
     }
-    public void setLastDayOfAttendance(int newLastDayOfAttendance){
+    public void setLastDayOfAttendance(int[] newLastDayOfAttendance){
         this.lastDayOfAttendance = newLastDayOfAttendance;
     }
 
