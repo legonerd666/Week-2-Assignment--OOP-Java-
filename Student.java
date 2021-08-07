@@ -7,17 +7,15 @@ public class Student {
     private int ID;
     private int[] dateOfBirth = new int[3];
     private int gradeLevel;
-    private int[] lastDayOfAttendance = new int[3];
     private List<Class> classes = new ArrayList<>();
     private float overallGrade;
 
-    Student(String name, int ID, int[] dateOfBirth, int gradeLevel, int[] lastDayOfAttendance, List<Class> classes){
+    Student(String name, int ID, int[] dateOfBirth, int gradeLevel, List<Class> classes){
 
         this.name = name;
         this.ID = ID;
         this.dateOfBirth = dateOfBirth;
         this.gradeLevel = gradeLevel;
-        this.lastDayOfAttendance = lastDayOfAttendance;
         this.classes = classes;
         this.overallGrade = getOverallGrade();
 
@@ -43,6 +41,13 @@ public class Student {
     public void setDateOfBirth(int[] dateOfBirth){
         this.dateOfBirth = dateOfBirth;
     }
+    public String getDateOfBirthDMY(){
+        StringBuilder str = new StringBuilder();
+        str.append(this.dateOfBirth[0] + ", ");
+        str.append(this.dateOfBirth[1] + ", ");
+        str.append(this.dateOfBirth[2]);
+        return str.toString();
+    }
 
     public int getGradeLevel(){
         return this.gradeLevel;
@@ -51,20 +56,21 @@ public class Student {
         this.gradeLevel = newGradeLevel;
     }
 
-    public int[] getLastDayOfAttendance(){
-        return this.lastDayOfAttendance;
-    }
-    public void setLastDayOfAttendance(int[] newLastDayOfAttendance){
-        this.lastDayOfAttendance = newLastDayOfAttendance;
-    }
-
     public List<Class> getClasses(){
         return this.classes;
     }
     public void setClasses(List<Class> newClasses){
         this.classes = newClasses;     
     }
-
+    public String getClassesAsString(){
+        StringBuilder str = new StringBuilder();
+        for (int e = 0; e < getClasses().size(); e++) {
+            str.append((e+1) + ".\n");
+            str.append(this.classes.get(e).toString());
+        }
+        return str.toString();
+    }
+    
     public float getOverallGrade(){
         setOverallGrade();
         return this.overallGrade;
@@ -72,10 +78,24 @@ public class Student {
     public void setOverallGrade(){
         float grades = 0;
 
-        for (Class class1 : classes) {
+        for (Class class1 : getClasses()) {
             grades += class1.getGrade();
         }
 
-        this.overallGrade = 100 * (grades / (this.classes.size() * 100));
+        this.overallGrade = 100 * (grades / (getClasses().size() * 100));
     }
+
+    @Override
+    public String toString(){
+        StringBuilder str = new StringBuilder();
+        str.append("Name: " + getName() + "\n");
+        str.append("ID: " + getID() + "\n");
+        str.append("Date of Birth (D, M, Y): " + getDateOfBirthDMY() + "\n");
+        str.append("Grade Level: " + getGradeLevel() + "\n");
+        str.append("Classes:\n");
+        str.append(getClassesAsString());
+        str.append("Overall Grade: " + getOverallGrade() + "/100\n");
+        return str.toString();
+    }
+
 }
