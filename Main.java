@@ -9,12 +9,18 @@ public class Main {
         List<Student> students = new ArrayList<>();
         List<Class> classes = new ArrayList<>();
         List<Teacher> teachers = new ArrayList<>();
-        teachers.add(new Teacher("Alan Dickinson", 1));
+        teachers.add(new Teacher("Alan Dickinson", teachers.size()+1));
+        teachers.add(new Teacher("Rick Sanchez", teachers.size()+1));
         int[] LDA = {0, 0, 0};
         classes.add(new Class(teachers.get(0), "Math", LDA));
         int[] DOB = {16, 2, 1996};
         students.add(new Student("Jason Smith", students.size()+1, DOB, 1, classes));
-
+        DOB[0] = 2;
+        DOB[1] = 12;
+        DOB[2] = 1994;
+        classes.remove(0);
+        classes.add(new Class(teachers.get(1), "Burping", LDA));
+        students.add(new Student("Bobbi", students.size()+1, DOB, 1, classes));
         mainScreen(students, classes, teachers);
 
     }
@@ -116,20 +122,32 @@ public class Main {
                 break;
             case 2:
                 pickedStudentID = pickStudentByName(students);
+                System.out.println("Please enter which teacher you are:");
+                int signedInTeacher = pickTeacherByName(teachers);
                 String classList = students.get(pickedStudentID-1).getClassesAsString();
                 int classNum = getInput("Please enter which class you'd like to set the grades of:\n" + classList, classes.size());
-                int newGrade = getInputAllow0("Please enter what their grade should be (0-100):", 100);
-                students.get(pickedStudentID-1).getClasses().get(classNum-1).setGrade(newGrade);
+                if (students.get(pickedStudentID-1).getClasses().get(classNum-1).getTeacher().getID() != signedInTeacher) {
+                    System.out.println("I'm sorry, you don't teach that student.");
+                } else {
+                    int newGrade = getInputAllow0("Please enter what their grade should be (0-100):", 100);
+                    students.get(pickedStudentID-1).getClasses().get(classNum-1).setGrade(newGrade);
+                }
                 break;
             case 3:
                 pickedStudentID = pickStudentByName(students);
+                System.out.println("Please enter which teacher you are:");
+                signedInTeacher = pickTeacherByName(teachers);
                 classList = students.get(pickedStudentID-1).getClassesAsString();
                 classNum = getInput("Please enter which class you'd like to set attendance for:\n" + classList, classes.size());
-                int newLdaDay = getInput("Please enter the day they attended:", 31);
-                int newLdaMonth = getInput("Please enter the month they attended:", 12);
-                int newLdaYear = getInput("Please enter the year they attended:", 3000);
-                int[] newLatestAttendance = {newLdaDay, newLdaMonth, newLdaYear};
-                students.get(pickedStudentID-1).getClasses().get(classNum-1).setLastDayOfAttendance(newLatestAttendance);
+                if (students.get(pickedStudentID-1).getClasses().get(classNum-1).getTeacher().getID() != signedInTeacher) {
+                    System.out.println("I'm sorry, you don't teach that student.");
+                } else {
+                    int newLdaDay = getInput("Please enter the day they attended:", 31);
+                    int newLdaMonth = getInput("Please enter the month they attended:", 12);
+                    int newLdaYear = getInput("Please enter the year they attended:", 3000);
+                    int[] newLatestAttendance = {newLdaDay, newLdaMonth, newLdaYear};
+                    students.get(pickedStudentID-1).getClasses().get(classNum-1).setLastDayOfAttendance(newLatestAttendance);
+                }
                 break;
             case 4:
                 int pickedTeacherID = pickTeacherByName(teachers);
