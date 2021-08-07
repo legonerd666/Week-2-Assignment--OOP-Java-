@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -24,15 +26,20 @@ public class Main {
 
 
         //Adds Students to the List of Students (Try making one yourself!)
-        int[] DOB1 = {16, 2, 1996};
-        List<Class> classes1 = new ArrayList<>();
-        classes1.add(allClasses.get(0));
-        students.add(new Student("Jason Smith", students.size()+1, DOB1, 1, classes1));
         
-        int[] DOB2 = {2, 11, 1996};
+        int[] DOB1 = {2, 11, 1996};
+        List<Class> classes1 = new ArrayList<>();
+        classes1.add(allClasses.get(1));
+        students.add(new Student("Bobbi", students.size()+1, DOB1, 1, classes1));
+
+        int[] DOB2 = {16, 2, 1996};
         List<Class> classes2 = new ArrayList<>();
-        classes2.add(allClasses.get(1));
-        students.add(new Student("Bobbi", students.size()+1, DOB2, 1, classes2));
+        classes2.add(allClasses.get(0));
+        students.add(new Student("Jason Smith", students.size()+1, DOB2, 1, classes2));
+
+        int[] DOB3 = {27, 8, 1996};
+        students.add(new Student("Lenny", students.size()+1, DOB3, 1, classes1));
+
 
 
         //Begins the main program now that the students, classes, and teachers have been made
@@ -132,8 +139,13 @@ public class Main {
 
         switch (input) {
             case 1:
-                int pickedStudentID = pickStudentByName(students);
-                System.out.println(students.get(pickedStudentID-1));
+                List<Student> sortedStudents = new ArrayList<>();
+                for (Student student : students) {
+                    sortedStudents.add(student);
+                }
+                sortedStudents = getSortedListOfStudents(sortedStudents, allClasses);
+                int pickedStudentID = pickStudentByName(sortedStudents);
+                System.out.println(sortedStudents.get(pickedStudentID-1));
                 break;
             case 2:
                 pickedStudentID = pickStudentByName(students);
@@ -174,6 +186,7 @@ public class Main {
                     }
                 }
                 break;
+            
         }
 
         mainScreen(students, allClasses, teachers);;
@@ -188,6 +201,7 @@ public class Main {
 
     public static int pickStudentByName(List<Student> students){
 
+        //Creates a String of all the students
         StringBuilder studentNames = new StringBuilder();
         for (int i = 0; i < students.size(); i++) {
             if (i-1 < students.size()){
@@ -198,6 +212,7 @@ public class Main {
             
         }
 
+        //Gets user input and lists the students
         int input = getInput("Which student?\n" + studentNames, students.size());
         return input;
 
@@ -205,6 +220,8 @@ public class Main {
     
     public static int pickTeacherByName(List<Teacher> teachers){
 
+
+        //Creates a String of all the teachers
         StringBuilder teacherNames = new StringBuilder();
         for (int i = 0; i < teachers.size(); i++) {
             if (i-1 < teachers.size()){
@@ -215,7 +232,47 @@ public class Main {
             
         }
 
+        //Gets user input and prints the information of all the teachers
         int input = getInput("Which Teacher?\n" + teacherNames, teachers.size());
         return input;
+    }
+
+    public static List<Student> getSortedListOfStudents(List<Student> students, List<Class> allClasses){
+
+        System.out.println("1. ID\n2. Name\n3. Class\n4. Grade");
+
+        int input = getInput("Pick Sorting Method:", 4);
+
+        switch (input) {
+            case 2:
+                Collections.sort(students, new Comparator<Student>(){
+                    public int compare(Student s1, Student s2){
+                        return s1.getName().compareTo(s2.getName());
+                    }
+                });
+                break;
+            case 3:
+                List<Student> unsortedStudents = new ArrayList<>();
+                for (Class takeableClass : allClasses){
+                    for (Student student : students) {
+                        for (Class takenClass : student.getClasses()) {
+                            if (takenClass.getSubject() == takeableClass.getSubject()) {
+                                unsortedStudents.add(student);
+                                students.remove(student);
+                            }
+                        }
+                    }
+                }
+                students = unsortedStudents;
+                break;
+            case 4:
+                        
+                break;
+            
+        }
+
+
+        return students;
+
     }
 }
