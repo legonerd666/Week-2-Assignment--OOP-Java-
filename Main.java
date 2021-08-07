@@ -20,8 +20,8 @@ public class Main {
 
 
         //Adds Classes to the List of Classes (Try making one yourself!)
-        allClasses.add(new TakeableClass(teachers.get(0), "Math", null));
-        allClasses.add(new TakeableClass(teachers.get(1), "Burping", null));
+        allClasses.add(new TakeableClass(teachers.get(0), "Math"));
+        allClasses.add(new TakeableClass(teachers.get(1), "Burping"));
 
 
         //Adds Students to the List of Students (Try making one yourself!)
@@ -154,36 +154,36 @@ public class Main {
                 pickedStudentID = pickStudentByName(students);
                 System.out.println("Please enter which teacher you are:");
                 int signedInTeacher = pickTeacherByName(teachers);
-                String classList = students.get(pickedStudentID-1).getClassesAsString();
-                int classNum = getInput("Please enter which class you'd like to set the grades of:\n" + classList, students.get(pickedStudentID-1).getClasses().size());
-                if (students.get(pickedStudentID-1).getClasses().get(classNum-1).getTeacher().getID() != signedInTeacher) {
+                String classList = students.get(pickedStudentID-1).getTakenClassesAsString();
+                int classNum = getInput("Please enter which class you'd like to set the grades of:\n" + classList, students.get(pickedStudentID-1).getTakenClasses().size());
+                if (students.get(pickedStudentID-1).getTakenClasses().get(classNum-1).getTakeableClass().getTeacher().getID() != signedInTeacher) {
                     System.out.println("I'm sorry, you don't teach that student.");
                 } else {
                     int newGrade = getInputAllow0("Please enter what their grade should be (0-100):", 100);
-                    students.get(pickedStudentID-1).getClasses().get(classNum-1).setGrade(newGrade);
+                    students.get(pickedStudentID-1).getTakenClasses().get(classNum-1).setGrade(newGrade);
                 }
                 break;
             case 3:
                 pickedStudentID = pickStudentByName(students);
                 System.out.println("Please enter which teacher you are:");
                 signedInTeacher = pickTeacherByName(teachers);
-                classList = students.get(pickedStudentID-1).getClassesAsString();
-                classNum = getInput("Please enter which class you'd like to set attendance for:\n" + classList, students.get(pickedStudentID-1).getClasses().size());
-                if (students.get(pickedStudentID-1).getClasses().get(classNum-1).getTeacher().getID() != signedInTeacher) {
+                classList = students.get(pickedStudentID-1).getTakenClassesAsString();
+                classNum = getInput("Please enter which class you'd like to set attendance for:\n" + classList, students.get(pickedStudentID-1).getTakenClasses().size());
+                if (students.get(pickedStudentID-1).getTakenClasses().get(classNum-1).getTakeableClass().getTeacher().getID() != signedInTeacher) {
                     System.out.println("I'm sorry, you don't teach that student.");
                 } else {
                     int newLdaDay = getInput("Please enter the day they attended:", 31);
                     int newLdaMonth = getInput("Please enter the month they attended:", 12);
                     int newLdaYear = getInput("Please enter the year they attended:", 3000);
                     int[] newLatestAttendance = {newLdaDay, newLdaMonth, newLdaYear};
-                    students.get(pickedStudentID-1).getClasses().get(classNum-1).setLastDayOfAttendance(newLatestAttendance);
+                    students.get(pickedStudentID-1).getTakenClasses().get(classNum-1).setLastDayOfAttendance(newLatestAttendance);
                 }
                 break;
             case 4:
                 int pickedTeacherID = pickTeacherByName(teachers);
                 for (Student student : students) {
-                    for (TakenClass takenClass : student.getClasses()) {
-                        if (takenClass.getTeacher().getID() == pickedTeacherID){
+                    for (TakenClass takenClass : student.getTakenClasses()) {
+                        if (takenClass.getTakeableClass().getTeacher().getID() == pickedTeacherID){
                             System.out.println(student.toString());
                         }
                     }
@@ -256,14 +256,9 @@ public class Main {
                 break;
             case 3:
                 List<Student> unsortedStudents = new ArrayList<>();
-                for (TakenClass takeableClass : allClasses){
-                    for (Student student : students) {
-                        for (TakenClass takenClass : student.getClasses()) {
-                            if (takenClass.getSubject() == takeableClass.getSubject()) {
-                                unsortedStudents.add(student);
-                                students.remove(student);
-                            }
-                        }
+                for (TakeableClass takeableClass : allClasses){
+                    for (Student student : takeableClass.getStudents()) {
+                        unsortedStudents.add(student);
                     }
                 }
                 students = unsortedStudents;

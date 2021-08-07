@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class TakeableClass {
@@ -6,11 +7,11 @@ public class TakeableClass {
     private String subject;
     private List<Student> students;
 
-    TakeableClass(Teacher teacher, String subject, List<Student> students) {
+    TakeableClass(Teacher teacher, String subject) {
 
         this.teacher = teacher;
         this.subject = subject;
-        this.students = students;
+        this.students = new ArrayList<>();
 
     }
 

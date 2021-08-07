@@ -23,5 +23,10 @@ public class Teacher {
     public void setID(int newID){
         this.ID = newID;
     }
+
+    @Override
+    public String toString(){
+        return this.name;
+    }
     
 }
