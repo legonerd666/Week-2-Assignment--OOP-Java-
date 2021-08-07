@@ -1,13 +1,12 @@
-import java.util.ArrayList;
 import java.util.List;
 
 public class Student {
 
     private String name;
     private int ID;
-    private int[] dateOfBirth = new int[3];
+    private int[] dateOfBirth;
     private int gradeLevel;
-    private List<Class> classes = new ArrayList<>();
+    private List<Class> classes;
     private float overallGrade;
 
     Student(String name, int ID, int[] dateOfBirth, int gradeLevel, List<Class> classes){
