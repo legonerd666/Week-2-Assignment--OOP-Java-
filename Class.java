@@ -1,11 +1,11 @@
 public class Class {
     
-    private String teacher;
+    private Teacher teacher;
     private String subject;
     private int grade;
     private int[] lastDayOfAttendance = new int[3];
 
-    Class(String teacher, String subject, int[] lastDayOfAttendance) {
+    Class(Teacher teacher, String subject, int[] lastDayOfAttendance) {
 
         this.teacher = teacher;
         this.subject = subject;
@@ -13,7 +13,7 @@ public class Class {
 
     }
 
-    public String getTeacher(){
+    public Teacher getTeacher(){
         return this.teacher;
     }
     public String getSubject(){
@@ -23,7 +23,7 @@ public class Class {
         return this.grade;
     }
 
-    public void setTeacher(String newTeacher){
+    public void setTeacher(Teacher newTeacher){
         this.teacher = newTeacher;
     }
     public void setSubject(String newSubject){
@@ -55,7 +55,7 @@ public class Class {
     public String toString(){
         StringBuilder str = new StringBuilder();
         str.append("    Subject: " + this.subject + "\n");
-        str.append("    Teacher: " + this.teacher + "\n");
+        str.append("    Teacher: " + this.teacher.getName() + "\n");
         str.append("    Last Date of Attendance: " + getLastDayOfAttendanceDMY() + "\n");
         str.append("    Grade: " + this.grade + "/100\n\n");
         return str.toString();

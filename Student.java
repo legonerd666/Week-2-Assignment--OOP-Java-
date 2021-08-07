@@ -64,7 +64,7 @@ public class Student {
     }
     public String getClassesAsString(){
         StringBuilder str = new StringBuilder();
-        for (int e = 0; e < getClasses().size(); e++) {
+        for (int e = 0; e < this.classes.size(); e++) {
             str.append((e+1) + ".\n");
             str.append(this.classes.get(e).toString());
         }
@@ -88,10 +88,10 @@ public class Student {
     @Override
     public String toString(){
         StringBuilder str = new StringBuilder();
-        str.append("Name: " + getName() + "\n");
-        str.append("ID: " + getID() + "\n");
+        str.append("Name: " + this.name + "\n");
+        str.append("ID: " + this.ID + "\n");
         str.append("Date of Birth (D, M, Y): " + getDateOfBirthDMY() + "\n");
-        str.append("Grade Level: " + getGradeLevel() + "\n");
+        str.append("Grade Level: " + this.gradeLevel + "\n");
         str.append("Classes:\n");
         str.append(getClassesAsString());
         str.append("Overall Grade: " + getOverallGrade() + "/100\n");

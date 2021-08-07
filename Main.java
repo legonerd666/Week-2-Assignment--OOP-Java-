@@ -8,27 +8,29 @@ public class Main {
 
         List<Student> students = new ArrayList<>();
         List<Class> classes = new ArrayList<>();
+        List<Teacher> teachers = new ArrayList<>();
+        teachers.add(new Teacher("Alan Dickinson", 1));
         int[] LDA = {0, 0, 0};
-        classes.add(new Class("Alan Dickinson", "Math", LDA));
+        classes.add(new Class(teachers.get(0), "Math", LDA));
         int[] DOB = {16, 2, 1996};
         students.add(new Student("Jason Smith", students.size()+1, DOB, 1, classes));
 
-        mainScreen(students, classes);
+        mainScreen(students, classes, teachers);
 
     }
 
-    public static void mainScreen(List<Student> students, List<Class> classes){
+    public static void mainScreen(List<Student> students, List<Class> classes, List<Teacher> teachers){
         int userType = getInput("Hello! \nPlease enter your User Type:\n1. Student\n2. Teacher\n3. Admin", 3);
         switch (userType) {
             case 1:
-                student(students, classes);
+                student(students, classes, teachers);
                 break;
             
             case 2:
-                teacher(students, classes);
+                teacher(students, classes, teachers);
                 break;
             case 3:
-                admin(students);
+                admin(students, classes, teachers);
                 break;
         }
     }
@@ -89,7 +91,7 @@ public class Main {
 
     }
     
-    public static void student(List<Student> students, List<Class> classes){
+    public static void student(List<Student> students, List<Class> classes, List<Teacher> teachers){
 
         int studentID = getInput("Please enter your student ID:", students.size());
 
@@ -99,13 +101,13 @@ public class Main {
             }
         }
 
-        mainScreen(students, classes);;
+        mainScreen(students, classes, teachers);;
 
     }
 
-    public static void teacher(List<Student> students, List<Class> classes){
+    public static void teacher(List<Student> students, List<Class> classes, List<Teacher> teachers){
 
-        int input = getInput("What would you like to do:\n1. Look at Student Data\n2. Change Students Grades\n3. Change Students Latest Date of Attendance", 4);
+        int input = getInput("What would you like to do:\n1. Look at Student Data\n2. Change Students Grades\n3. Change Students Latest Date of Attendance\n4. List Students by Teacher", 4);
 
         switch (input) {
             case 1:
@@ -130,15 +132,22 @@ public class Main {
                 students.get(pickedStudentID-1).getClasses().get(classNum-1).setLastDayOfAttendance(newLatestAttendance);
                 break;
             case 4:
-                
+                int pickedTeacherID = pickTeacherByName(teachers);
+                for (Student student : students) {
+                    for (Class takenClass : student.getClasses()) {
+                        if (takenClass.getTeacher().getID() == pickedTeacherID){
+                            System.out.println(student.toString());
+                        }
+                    }
+                }
                 break;
         }
 
-        mainScreen(students, classes);;
+        mainScreen(students, classes, teachers);;
 
     }
 
-    public static void admin(List<Student> students){
+    public static void admin(List<Student> students, List<Class> classes, List<Teacher> teachers){
 
         System.out.println("You are an admin");
 
@@ -161,4 +170,19 @@ public class Main {
 
     }
     
+    public static int pickTeacherByName(List<Teacher> teachers){
+
+        StringBuilder teacherNames = new StringBuilder();
+        for (int i = 0; i < teachers.size(); i++) {
+            if (i-1 < teachers.size()){
+                teacherNames.append((i+1) + ". " + teachers.get(i).getName() + "\n");
+            } else{
+                teacherNames.append((i+1) + ". " + teachers.get(i).getName());
+            }
+            
+        }
+
+        int input = getInput("Which Teacher?\n" + teacherNames, teachers.size());
+        return input;
+    }
 }
