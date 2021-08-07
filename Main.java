@@ -10,7 +10,7 @@ public class Main {
 
         //Creates a List to store all teachers, students, and classes
         List<Student> students = new ArrayList<>();
-        List<Class> allClasses = new ArrayList<>();
+        List<TakeableClass> allClasses = new ArrayList<>();
         List<Teacher> teachers = new ArrayList<>();
 
 
@@ -20,25 +20,28 @@ public class Main {
 
 
         //Adds Classes to the List of Classes (Try making one yourself!)
-        int[] LDA = {0, 0, 0};
-        allClasses.add(new Class(teachers.get(0), "Math", LDA));
-        allClasses.add(new Class(teachers.get(1), "Burping", LDA));
+        allClasses.add(new TakeableClass(teachers.get(0), "Math", null));
+        allClasses.add(new TakeableClass(teachers.get(1), "Burping", null));
 
 
         //Adds Students to the List of Students (Try making one yourself!)
         
         int[] DOB1 = {2, 11, 1996};
-        List<Class> classes1 = new ArrayList<>();
-        classes1.add(allClasses.get(1));
+        int[] LDA = {0, 0, 0};
+        List<TakenClass> classes1 = new ArrayList<>();
+        classes1.add(new TakenClass(allClasses.get(1), LDA));
         students.add(new Student("Bobbi", students.size()+1, DOB1, 1, classes1));
+        allClasses.get(1).getStudents().add(students.get(0));
 
         int[] DOB2 = {16, 2, 1996};
-        List<Class> classes2 = new ArrayList<>();
-        classes2.add(allClasses.get(0));
+        List<TakenClass> classes2 = new ArrayList<>();
+        classes2.add(new TakenClass(allClasses.get(0), LDA));
         students.add(new Student("Jason Smith", students.size()+1, DOB2, 1, classes2));
+        allClasses.get(0).getStudents().add(students.get(1));
 
         int[] DOB3 = {27, 8, 1996};
         students.add(new Student("Lenny", students.size()+1, DOB3, 1, classes1));
+        allClasses.get(1).getStudents().add(students.get(2));
 
 
 
@@ -47,7 +50,7 @@ public class Main {
 
     }
 
-    public static void mainScreen(List<Student> students, List<Class> allClasses, List<Teacher> teachers){
+    public static void mainScreen(List<Student> students, List<TakeableClass> allClasses, List<Teacher> teachers){
         int userType = getInput("Hello! \nPlease enter your User Type:\n1. Student\n2. Teacher\n3. Admin", 3);
         switch (userType) {
             case 1:
@@ -119,7 +122,7 @@ public class Main {
 
     }
     
-    public static void student(List<Student> students, List<Class> allClasses, List<Teacher> teachers){
+    public static void student(List<Student> students, List<TakeableClass> allClasses, List<Teacher> teachers){
 
         int studentID = getInput("Please enter your student ID:", students.size());
 
@@ -133,7 +136,7 @@ public class Main {
 
     }
 
-    public static void teacher(List<Student> students, List<Class> allClasses, List<Teacher> teachers){
+    public static void teacher(List<Student> students, List<TakeableClass> allClasses, List<Teacher> teachers){
 
         int input = getInput("What would you like to do:\n1. Look at Student Data\n2. Change Students Grades\n3. Change Students Latest Date of Attendance\n4. List Students by Teacher", 4);
 
@@ -179,7 +182,7 @@ public class Main {
             case 4:
                 int pickedTeacherID = pickTeacherByName(teachers);
                 for (Student student : students) {
-                    for (Class takenClass : student.getClasses()) {
+                    for (TakenClass takenClass : student.getClasses()) {
                         if (takenClass.getTeacher().getID() == pickedTeacherID){
                             System.out.println(student.toString());
                         }
@@ -193,7 +196,7 @@ public class Main {
 
     }
 
-    public static void admin(List<Student> students, List<Class> allClasses, List<Teacher> teachers){
+    public static void admin(List<Student> students, List<TakeableClass> allClasses, List<Teacher> teachers){
 
         System.out.println("You are an admin");
 
@@ -237,7 +240,7 @@ public class Main {
         return input;
     }
 
-    public static List<Student> getSortedListOfStudents(List<Student> students, List<Class> allClasses){
+    public static List<Student> getSortedListOfStudents(List<Student> students, List<TakeableClass> allClasses){
 
         System.out.println("1. ID\n2. Name\n3. Class\n4. Grade");
 
@@ -253,9 +256,9 @@ public class Main {
                 break;
             case 3:
                 List<Student> unsortedStudents = new ArrayList<>();
-                for (Class takeableClass : allClasses){
+                for (TakenClass takeableClass : allClasses){
                     for (Student student : students) {
-                        for (Class takenClass : student.getClasses()) {
+                        for (TakenClass takenClass : student.getClasses()) {
                             if (takenClass.getSubject() == takeableClass.getSubject()) {
                                 unsortedStudents.add(student);
                                 students.remove(student);

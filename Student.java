@@ -6,16 +6,16 @@ public class Student {
     private int ID;
     private int[] dateOfBirth;
     private int gradeLevel;
-    private List<Class> classes;
+    private List<TakenClass> takenClasses;
     private float overallGrade;
 
-    Student(String name, int ID, int[] dateOfBirth, int gradeLevel, List<Class> classes){
+    Student(String name, int ID, int[] dateOfBirth, int gradeLevel, List<TakenClass> takenClasses){
 
         this.name = name;
         this.ID = ID;
         this.dateOfBirth = dateOfBirth;
         this.gradeLevel = gradeLevel;
-        this.classes = classes;
+        this.takenClasses = takenClasses;
         this.overallGrade = getOverallGrade();
 
     }
@@ -55,17 +55,17 @@ public class Student {
         this.gradeLevel = newGradeLevel;
     }
 
-    public List<Class> getClasses(){
-        return this.classes;
+    public List<TakenClass> getTakenClasses(){
+        return this.takenClasses;
     }
-    public void setClasses(List<Class> newClasses){
-        this.classes = newClasses;     
+    public void setTakenClasses(List<TakenClass> newTakenClasses){
+        this.takenClasses = newTakenClasses;     
     }
-    public String getClassesAsString(){
+    public String getTakenClassesAsString(){
         StringBuilder str = new StringBuilder();
-        for (int e = 0; e < this.classes.size(); e++) {
+        for (int e = 0; e < this.takenClasses.size(); e++) {
             str.append((e+1) + ".\n");
-            str.append(this.classes.get(e).toString());
+            str.append(this.takenClasses.get(e).toString());
         }
         return str.toString();
     }
@@ -77,11 +77,11 @@ public class Student {
     public void setOverallGrade(){
         float grades = 0;
 
-        for (Class class1 : getClasses()) {
+        for (TakenClass class1 : getTakenClasses()) {
             grades += class1.getGrade();
         }
 
-        this.overallGrade = 100 * (grades / (getClasses().size() * 100));
+        this.overallGrade = 100 * (grades / (getTakenClasses().size() * 100));
     }
 
     @Override
@@ -92,7 +92,7 @@ public class Student {
         str.append("Date of Birth (D, M, Y): " + getDateOfBirthDMY() + "\n");
         str.append("Grade Level: " + this.gradeLevel + "\n");
         str.append("Classes:\n");
-        str.append(getClassesAsString());
+        str.append(getTakenClassesAsString());
         str.append("Overall Grade: " + getOverallGrade() + "/100\n");
         return str.toString();
     }

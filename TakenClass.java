@@ -1,34 +1,28 @@
-public class Class {
+public class TakenClass {
     
-    private Teacher teacher;
-    private String subject;
+    private TakeableClass takenClass;
     private int grade;
     private int[] lastDayOfAttendance = new int[3];
 
-    Class(Teacher teacher, String subject, int[] lastDayOfAttendance) {
+    TakenClass(TakeableClass newTakeableClass, int[] newLastDayOfAttendance) {
 
-        this.teacher = teacher;
-        this.subject = subject;
-        this.lastDayOfAttendance = lastDayOfAttendance;
+        this.takenClass = newTakeableClass;
+        this.lastDayOfAttendance = newLastDayOfAttendance;
 
     }
 
-    public Teacher getTeacher(){
-        return this.teacher;
+    public TakeableClass getTakenClass(){
+        return this.takenClass;
     }
-    public String getSubject(){
-        return this.subject;
+
+    public void setTakenClass(TakeableClass newTakenClass){
+        this.takenClass = newTakenClass;
     }
+
     public int getGrade(){
         return this.grade;
     }
 
-    public void setTeacher(Teacher newTeacher){
-        this.teacher = newTeacher;
-    }
-    public void setSubject(String newSubject){
-        this.subject = newSubject;
-    }
     public void setGrade(int newGrade){
         if (newGrade > 100 || newGrade < 0){
             System.out.println("That grade is invalid");
@@ -54,8 +48,8 @@ public class Class {
     @Override
     public String toString(){
         StringBuilder str = new StringBuilder();
-        str.append("    Subject: " + this.subject + "\n");
-        str.append("    Teacher: " + this.teacher.getName() + "\n");
+        str.append("    Subject: " + this.takenClass.getSubject().toString() + "\n");
+        str.append("    Teacher: " + this.takenClass.getTeacher().toString() + "\n");
         str.append("    Last Date of Attendance: " + getLastDayOfAttendanceDMY() + "\n");
         str.append("    Grade: " + this.grade + "/100\n\n");
         return str.toString();
