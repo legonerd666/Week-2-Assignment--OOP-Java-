@@ -211,7 +211,13 @@ public class Main {
 
     public static void admin(List<Student> students, List<TakeableClass> allClasses, List<Teacher> teachers){
 
-        int input = getInput("What would you like to do:\n1. Look at Student Data\n2. Change Students Grades\n3. Change Students Latest Date of Attendance\n4. List Students by Teacher\n5. Assign Teacher to Class\n6. List Classes", 6);
+        /*  Allows admins to read all student information sorted 4 different ways
+            Change a students grades and last day of attendance
+            List students by teacher teaching a class they take
+            Assign a teacher to a class
+            And list all classes
+        */
+        int input = getInput("What would you like to do:\n1. Look at Student Data\n2. Change Students Grades\n3. Change Students Latest Date of Attendance\n4. List Students by Teacher\n5. Assign Teacher to Class\n6. List Classes\n7. Add a new class", 7);
 
         switch (input) {
             case 1:
@@ -269,6 +275,14 @@ public class Main {
                 break;
             case 6:
                 System.out.println(allClasses.toString());
+                break;
+            case 7:
+                Scanner scan = new Scanner(System.in);
+
+                System.out.println("What would you like the class subject to be:");
+                String subject = scan.nextLine();
+                pickedTeacherID = pickTeacherByName(teachers);
+                allClasses.add(new TakeableClass(teachers.get(pickedTeacherID-1), subject));
                 break;
             
         }
