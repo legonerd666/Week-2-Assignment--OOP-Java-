@@ -51,6 +51,8 @@ public class Main {
     }
 
     public static void mainScreen(List<Student> students, List<TakeableClass> allClasses, List<Teacher> teachers){
+
+        //Asks the user with what permission level they'd like to access the database
         int userType = getInput("Hello! \nPlease enter your User Type:\n1. Student\n2. Teacher\n3. Admin", 3);
         switch (userType) {
             case 1:
@@ -124,6 +126,7 @@ public class Main {
     
     public static void student(List<Student> students, List<TakeableClass> allClasses, List<Teacher> teachers){
 
+        //Lets a student see their information if they have their ID Number
         int studentID = getInput("Please enter your student ID:", students.size());
 
         for (Student student : students) {
@@ -138,7 +141,77 @@ public class Main {
 
     public static void teacher(List<Student> students, List<TakeableClass> allClasses, List<Teacher> teachers){
 
+
+        /*  Allows teachers to read all student information sorted 4 different ways
+            Change a students grades and last day of attendance if they teach said student
+            And list students by teacher teaching a class they take
+        */
         int input = getInput("What would you like to do:\n1. Look at Student Data\n2. Change Students Grades\n3. Change Students Latest Date of Attendance\n4. List Students by Teacher", 4);
+
+        switch (input) {
+            
+            //Sorts students by prefered method and prints them to console and then prints chosen students information
+            case 1:
+                List<Student> sortedStudents = new ArrayList<>();
+                for (Student student : students) {
+                    sortedStudents.add(student);
+                }
+                sortedStudents = getSortedListOfStudents(sortedStudents, allClasses);
+                int pickedStudentID = pickStudentByName(sortedStudents);
+                System.out.println(sortedStudents.get(pickedStudentID-1));
+                break;
+            //Lets teachers pick a student and change the grades of one of those students classes if the teacher teaches that class
+            case 2:
+                pickedStudentID = pickStudentByName(students);
+                System.out.println("Please enter which teacher you are:");
+                int signedInTeacher = pickTeacherByName(teachers);
+                String classList = students.get(pickedStudentID-1).getTakenClassesAsString();
+                int classNum = getInput("Please enter which class you'd like to set the grades of:\n" + classList, students.get(pickedStudentID-1).getTakenClasses().size());
+                if (students.get(pickedStudentID-1).getTakenClasses().get(classNum-1).getTakeableClass().getTeacher().getID() != signedInTeacher) {
+                    System.out.println("I'm sorry, you don't teach that student.");
+                } else {
+                    int newGrade = getInputAllow0("Please enter what their grade should be (0-100):", 100);
+                    students.get(pickedStudentID-1).getTakenClasses().get(classNum-1).setGrade(newGrade);
+                }
+                break;
+            //Lets teachers pick a student and change the last day of attendance of one of those students classes if the teacher teaches that class
+            case 3:
+                pickedStudentID = pickStudentByName(students);
+                System.out.println("Please enter which teacher you are:");
+                signedInTeacher = pickTeacherByName(teachers);
+                classList = students.get(pickedStudentID-1).getTakenClassesAsString();
+                classNum = getInput("Please enter which class you'd like to set attendance for:\n" + classList, students.get(pickedStudentID-1).getTakenClasses().size());
+                if (students.get(pickedStudentID-1).getTakenClasses().get(classNum-1).getTakeableClass().getTeacher().getID() != signedInTeacher) {
+                    System.out.println("I'm sorry, you don't teach that student.");
+                } else {
+                    int newLdaDay = getInput("Please enter the day they attended:", 31);
+                    int newLdaMonth = getInput("Please enter the month they attended:", 12);
+                    int newLdaYear = getInput("Please enter the year they attended:", 3000);
+                    int[] newLatestAttendance = {newLdaDay, newLdaMonth, newLdaYear};
+                    students.get(pickedStudentID-1).getTakenClasses().get(classNum-1).setLastDayOfAttendance(newLatestAttendance);
+                }
+                break;
+            //Lets teachers pick a teacher and then print all students who take any of the classes taught by that teacher
+            case 4:
+                int pickedTeacherID = pickTeacherByName(teachers);
+                for (Student student : students) {
+                    for (TakenClass takenClass : student.getTakenClasses()) {
+                        if (takenClass.getTakeableClass().getTeacher().getID() == pickedTeacherID){
+                            System.out.println(student.toString());
+                        }
+                    }
+                }
+                break;
+            
+        }
+
+        mainScreen(students, allClasses, teachers);
+
+    }
+
+    public static void admin(List<Student> students, List<TakeableClass> allClasses, List<Teacher> teachers){
+
+        int input = getInput("What would you like to do:\n1. Look at Student Data\n2. Change Students Grades\n3. Change Students Latest Date of Attendance\n4. List Students by Teacher\n5. Assign Teacher to Class\n6. List Classes", 6);
 
         switch (input) {
             case 1:
@@ -189,16 +262,18 @@ public class Main {
                     }
                 }
                 break;
+            case 5:
+                int pickedClassI = pickClassBySubject(allClasses);
+                pickedTeacherID = pickTeacherByName(teachers);
+                allClasses.get(pickedClassI-1).setTeacher(teachers.get(pickedTeacherID-1));
+                break;
+            case 6:
+                System.out.println(allClasses.toString());
+                break;
             
         }
 
-        mainScreen(students, allClasses, teachers);;
-
-    }
-
-    public static void admin(List<Student> students, List<TakeableClass> allClasses, List<Teacher> teachers){
-
-        System.out.println("You are an admin");
+        mainScreen(students, allClasses, teachers);
 
     }
 
@@ -236,7 +311,7 @@ public class Main {
         }
 
         //Gets user input and prints the information of all the teachers
-        int input = getInput("Which Teacher?\n" + teacherNames, teachers.size());
+        int input = getInput("Which Teacher would you like it to be?\n" + teacherNames, teachers.size());
         return input;
     }
 
@@ -264,13 +339,36 @@ public class Main {
                 students = unsortedStudents;
                 break;
             case 4:
-                        
+                Collections.sort(students, new Comparator<Student>(){
+                    public int compare(Student s1, Student s2){
+                        return Integer.compare(s1.getGradeLevel(), s2.getGradeLevel());
+                    }
+                });
                 break;
             
         }
 
 
         return students;
+
+    }
+
+    public static int pickClassBySubject(List<TakeableClass> allClasses){
+
+        //Creates a String of all the classes
+        StringBuilder classSubjects = new StringBuilder();
+        for (int i = 0; i < allClasses.size(); i++) {
+            if (i-1 < allClasses.size()){
+                classSubjects.append((i+1) + ". " + allClasses.get(i).getSubject() + "\n");
+            } else{
+                classSubjects.append((i+1) + ". " + allClasses.get(i).getSubject());
+            }
+            
+        }
+
+        //Gets user input and lists the students
+        int input = getInput("Which class?\n" + classSubjects, allClasses.size());
+        return input;
 
     }
 }
