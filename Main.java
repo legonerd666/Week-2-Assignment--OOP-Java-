@@ -246,6 +246,7 @@ public class Main {
 
         switch (input) {
             case 1:
+                //Prints all students to the console in prefered sorting method
                 List<Student> sortedStudents = new ArrayList<>();
                 for (Student student : students) {
                     sortedStudents.add(student);
@@ -255,35 +256,26 @@ public class Main {
                 System.out.println(sortedStudents.get(pickedStudentID-1));
                 break;
             case 2:
+                //allows admin to change a students grades
                 pickedStudentID = pickStudentByName(students);
-                System.out.println("Please enter which teacher you are:");
-                int signedInTeacher = pickTeacherByName(teachers);
                 String classList = students.get(pickedStudentID-1).getTakenClassesAsString();
                 int classNum = getInput("Please enter which class you'd like to set the grades of:\n" + classList, students.get(pickedStudentID-1).getTakenClasses().size());
-                if (students.get(pickedStudentID-1).getTakenClasses().get(classNum-1).getTakeableClass().getTeacher().getID() != signedInTeacher) {
-                    System.out.println("I'm sorry, you don't teach that student.");
-                } else {
-                    int newGrade = getInputAllow0("Please enter what their grade should be (0-100):", 100);
-                    students.get(pickedStudentID-1).getTakenClasses().get(classNum-1).setGrade(newGrade);
-                }
+                int newGrade = getInputAllow0("Please enter what their grade should be (0-100):", 100);
+                students.get(pickedStudentID-1).getTakenClasses().get(classNum-1).setGrade(newGrade);
                 break;
             case 3:
+                //allows an admin to change a students last day of attendance
                 pickedStudentID = pickStudentByName(students);
-                System.out.println("Please enter which teacher you are:");
-                signedInTeacher = pickTeacherByName(teachers);
                 classList = students.get(pickedStudentID-1).getTakenClassesAsString();
                 classNum = getInput("Please enter which class you'd like to set attendance for:\n" + classList, students.get(pickedStudentID-1).getTakenClasses().size());
-                if (students.get(pickedStudentID-1).getTakenClasses().get(classNum-1).getTakeableClass().getTeacher().getID() != signedInTeacher) {
-                    System.out.println("I'm sorry, you don't teach that student.");
-                } else {
-                    int newLdaDay = getInput("Please enter the day they attended:", 31);
-                    int newLdaMonth = getInput("Please enter the month they attended:", 12);
-                    int newLdaYear = getInput("Please enter the year they attended:", 3000);
-                    int[] newLatestAttendance = {newLdaDay, newLdaMonth, newLdaYear};
-                    students.get(pickedStudentID-1).getTakenClasses().get(classNum-1).setLastDayOfAttendance(newLatestAttendance);
-                }
+                int newLdaDay = getInput("Please enter the day they attended:", 31);
+                int newLdaMonth = getInput("Please enter the month they attended:", 12);
+                int newLdaYear = getInput("Please enter the year they attended:", 3000);
+                int[] newLatestAttendance = {newLdaDay, newLdaMonth, newLdaYear};
+                students.get(pickedStudentID-1).getTakenClasses().get(classNum-1).setLastDayOfAttendance(newLatestAttendance);
                 break;
             case 4:
+                //prints all students who take classes from a teacher
                 int pickedTeacherID = pickTeacherByName(teachers);
                 for (Student student : students) {
                     for (TakenClass takenClass : student.getTakenClasses()) {
@@ -294,14 +286,17 @@ public class Main {
                 }
                 break;
             case 5:
+                //allows an admin to assign a teacher to a class
                 int pickedClassI = pickClassBySubject(allClasses);
                 pickedTeacherID = pickTeacherByName(teachers);
                 allClasses.get(pickedClassI-1).setTeacher(teachers.get(pickedTeacherID-1));
                 break;
             case 6:
+                //prints all classes to the console
                 System.out.println(allClasses.toString());
                 break;
             case 7:
+                //allows admins to create a new class
                 Scanner scan = new Scanner(System.in);
 
                 System.out.println("What would you like the class subject to be:");
@@ -310,6 +305,7 @@ public class Main {
                 allClasses.add(new TakeableClass(teachers.get(pickedTeacherID-1), subject));
                 break;
             case 8:
+                //allows admins to hire a new teacher
                 scan = new Scanner(System.in);
 
                 System.out.println("What is the teachers name:");
@@ -317,6 +313,7 @@ public class Main {
                 teachers.add(new Teacher(name, teachers.size()+1));
                 break;
             case 9:
+                //allows admins to recruit a new student
                 scan = new Scanner(System.in);
 
                 System.out.println("What is the students name:");
@@ -375,12 +372,14 @@ public class Main {
 
     public static List<Student> getSortedListOfStudents(List<Student> students, List<TakeableClass> allClasses){
 
+        //returns a sorted list of students
         System.out.println("1. ID\n2. Name\n3. Class\n4. Grade");
 
         int input = getInput("Pick Sorting Method:", 4);
 
         switch (input) {
             case 2:
+                //Sorts the students by name in alphabetical order
                 Collections.sort(students, new Comparator<Student>(){
                     public int compare(Student s1, Student s2){
                         return s1.getName().compareTo(s2.getName());
@@ -388,6 +387,7 @@ public class Main {
                 });
                 break;
             case 3:
+                //Sorts students by classes they take (classes with lower IDS take priority)
                 List<Student> unsortedStudents = new ArrayList<>();
                 for (TakeableClass takeableClass : allClasses){
                     for (Student student : takeableClass.getStudents()) {
@@ -397,6 +397,7 @@ public class Main {
                 students = unsortedStudents;
                 break;
             case 4:
+                //Sorts the students by grade
                 Collections.sort(students, new Comparator<Student>(){
                     public int compare(Student s1, Student s2){
                         return Integer.compare(s1.getGradeLevel(), s2.getGradeLevel());
