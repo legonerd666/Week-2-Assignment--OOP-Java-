@@ -126,13 +126,35 @@ public class Main {
     
     public static void student(List<Student> students, List<TakeableClass> allClasses, List<Teacher> teachers){
 
-        //Lets a student see their information if they have their ID Number
-        int studentID = getInput("Please enter your student ID:", students.size());
+    
+        int input = getInput("What would you like to do:\n1. Look at your data\n2. Take a new class", 2);
 
-        for (Student student : students) {
-            if (student.getID() == studentID){
-                System.out.println(student.toString());
-            }
+        switch (input) {
+            case 1:
+                //Lets a student see their information if they have their ID Number
+                int studentID = getInput("Please enter your student ID:", students.size());
+                System.out.println(students.get(studentID-1).toString());
+                break;
+            
+            case 2:
+                //Allows student to choose to add a class provided they don't already take the class
+                studentID = getInput("Please enter your student ID:", students.size());
+                int pickedClassI = pickClassBySubject(allClasses);
+                boolean hadClass = false;
+                for (TakenClass takenClass : students.get(studentID-1).getTakenClasses()) {
+                    if (takenClass.getTakeableClass().getSubject() == allClasses.get(pickedClassI-1).getSubject()){
+                        System.out.println("You already take that class");
+                        hadClass = true;
+                    }
+                }
+                if (hadClass) {
+                    break;
+                } else {
+                    int[] LDA = {0, 0, 0};
+                    students.get(studentID-1).getTakenClasses().add(new TakenClass(allClasses.get(pickedClassI-1), LDA));
+                    allClasses.get(pickedClassI-1).getStudents().add(students.get(studentID));
+                    break;
+                }
         }
 
         mainScreen(students, allClasses, teachers);;
@@ -215,7 +237,10 @@ public class Main {
             Change a students grades and last day of attendance
             List students by teacher teaching a class they take
             Assign a teacher to a class
-            And list all classes
+            list all classes
+            Add new classes
+            add new teachers
+            and add new students
         */
         int input = getInput("What would you like to do:\n1. Look at Student Data\n2. Change Students Grades\n3. Change Students Latest Date of Attendance\n4. List Students by Teacher\n5. Assign Teacher to Class\n6. List Classes\n7. Add a new class\n8. Hire new teacher\n9. Recruit new student", 9);
 
