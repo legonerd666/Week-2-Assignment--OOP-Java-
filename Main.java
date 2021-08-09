@@ -217,7 +217,7 @@ public class Main {
             Assign a teacher to a class
             And list all classes
         */
-        int input = getInput("What would you like to do:\n1. Look at Student Data\n2. Change Students Grades\n3. Change Students Latest Date of Attendance\n4. List Students by Teacher\n5. Assign Teacher to Class\n6. List Classes\n7. Add a new class", 7);
+        int input = getInput("What would you like to do:\n1. Look at Student Data\n2. Change Students Grades\n3. Change Students Latest Date of Attendance\n4. List Students by Teacher\n5. Assign Teacher to Class\n6. List Classes\n7. Add a new class\n8. Hire new teacher\n9. Recruit new student", 9);
 
         switch (input) {
             case 1:
@@ -284,7 +284,26 @@ public class Main {
                 pickedTeacherID = pickTeacherByName(teachers);
                 allClasses.add(new TakeableClass(teachers.get(pickedTeacherID-1), subject));
                 break;
-            
+            case 8:
+                scan = new Scanner(System.in);
+
+                System.out.println("What is the teachers name:");
+                String name = scan.nextLine();
+                teachers.add(new Teacher(name, teachers.size()+1));
+                break;
+            case 9:
+                scan = new Scanner(System.in);
+
+                System.out.println("What is the students name:");
+                name = scan.nextLine();
+                int DOB = getInput("Please enter the day of their birth:", 31);
+                int MOB = getInput("Please enter the month of their birth:", 12);
+                int YOB = getInput("Please enter the year of their birth:", 3000);
+                int[] dateOfBirth = {DOB, MOB, YOB};
+                int gradeLevel = getInput("Please enter their grade", 12);
+                List<TakenClass> takenClasses = new ArrayList<>();
+                students.add(new Student(name, students.size()+1, dateOfBirth, gradeLevel, takenClasses));
+                break;
         }
 
         mainScreen(students, allClasses, teachers);
