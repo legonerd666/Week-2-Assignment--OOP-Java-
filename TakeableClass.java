@@ -42,6 +42,11 @@ public class TakeableClass {
         StringBuilder str = new StringBuilder();
         str.append("    Subject: " + this.subject + "\n");
         str.append("    Teacher: " + this.teacher.getName() + "\n");
+        str.append("    Students:\n");
+        for (Student student : students) {
+            str.append("        Name: " + student.getName() + "\n");
+            str.append("        ID: " + student.getID() + "\n\n");
+        }
         return str.toString();
     }
 
