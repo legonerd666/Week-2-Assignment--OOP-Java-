@@ -30,7 +30,7 @@ public class Main {
         int[] LDA = {0, 0, 0};
         List<TakenClass> classes1 = new ArrayList<>();
         classes1.add(new TakenClass(allClasses.get(1), LDA));
-        students.add(new Student("Bobbi", students.size()+1, DOB1, 1, classes1));
+        students.add(new Student("Bobbi Burris", students.size()+1, DOB1, 1, classes1));
         allClasses.get(1).getStudents().add(students.get(0));
 
         int[] DOB2 = {16, 2, 1996};
@@ -40,9 +40,37 @@ public class Main {
         allClasses.get(0).getStudents().add(students.get(1));
 
         int[] DOB3 = {27, 8, 1996};
-        students.add(new Student("Lenny", students.size()+1, DOB3, 1, classes1));
+        students.add(new Student("Lenny Bannister", students.size()+1, DOB3, 1, classes1));
         allClasses.get(1).getStudents().add(students.get(2));
 
+        int[] DOB4 = {3, 5, 1995};
+        students.add(new Student("Lily-May Campbell", students.size()+1, DOB4, 2, classes1));
+        allClasses.get(1).getStudents().add(students.get(3));
+
+        int[] DOB5 = {9, 2, 1996};
+        students.add(new Student("Dollie O'Neill", students.size()+1, DOB5, 1, classes2));
+        allClasses.get(0).getStudents().add(students.get(4));
+
+        int[] DOB6 = {31, 4, 1996};
+        students.add(new Student("Carl Brooks", students.size()+1, DOB6, 1, classes2));
+        allClasses.get(0).getStudents().add(students.get(5));
+
+        int[] DOB7 = {17, 7, 1995};
+        classes1.add(new TakenClass(allClasses.get(0), LDA));
+        students.add(new Student("Iqra O'Doherty", students.size()+1, DOB7, 2, classes1));
+        allClasses.get(1).getStudents().add(students.get(6));
+
+        int[] DOB8 = {16, 11, 1996};
+        students.add(new Student("Codie Cain", students.size()+1, DOB8, 1, classes1));
+        allClasses.get(1).getStudents().add(students.get(7));
+
+        int[] DOB9 = {4, 3, 1996};
+        students.add(new Student("Greg O'Gallagher", students.size()+1, DOB9, 1, classes1));
+        allClasses.get(1).getStudents().add(students.get(8));
+
+        int[] DOB10 = {3, 10, 1996};
+        students.add(new Student("Tania Clarkson", students.size()+1, DOB10, 1, classes2));
+        allClasses.get(0).getStudents().add(students.get(9));
 
 
         //Begins the main program now that the students, classes, and teachers have been made
