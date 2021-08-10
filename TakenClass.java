@@ -39,8 +39,8 @@ public class TakenClass {
     }
     public String getLastDayOfAttendanceDMY(){
         StringBuilder str = new StringBuilder();
-        str.append(this.lastDayOfAttendance[0] + ", ");
-        str.append(this.lastDayOfAttendance[1] + ", ");
+        str.append(this.lastDayOfAttendance[0] + "/");
+        str.append(this.lastDayOfAttendance[1] + "/");
         str.append(this.lastDayOfAttendance[2]);
         return str.toString();
     }
@@ -50,7 +50,7 @@ public class TakenClass {
         StringBuilder str = new StringBuilder();
         str.append("    Subject: " + this.takeableClass.getSubject().toString() + "\n");
         str.append("    Teacher: " + this.takeableClass.getTeacher().toString() + "\n");
-        str.append("    Last Date of Attendance (D, M, Y): " + getLastDayOfAttendanceDMY() + "\n");
+        str.append("    Last Date of Attendance (D/M/Y): " + getLastDayOfAttendanceDMY() + "\n");
         str.append("    Grade: " + this.grade + "/100\n\n");
         return str.toString();
     }

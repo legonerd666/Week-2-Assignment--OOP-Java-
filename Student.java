@@ -42,8 +42,8 @@ public class Student {
     }
     public String getDateOfBirthDMY(){
         StringBuilder str = new StringBuilder();
-        str.append(this.dateOfBirth[0] + ", ");
-        str.append(this.dateOfBirth[1] + ", ");
+        str.append(this.dateOfBirth[0] + "/");
+        str.append(this.dateOfBirth[1] + "/");
         str.append(this.dateOfBirth[2]);
         return str.toString();
     }
@@ -89,7 +89,7 @@ public class Student {
         StringBuilder str = new StringBuilder();
         str.append("Name: " + this.name + "\n");
         str.append("ID: " + this.ID + "\n");
-        str.append("Date of Birth (D, M, Y): " + getDateOfBirthDMY() + "\n");
+        str.append("Date of Birth (D/M/Y): " + getDateOfBirthDMY() + "\n");
         str.append("Grade Level: " + this.gradeLevel + "\n");
         str.append("Classes:\n");
         str.append(getTakenClassesAsString());
